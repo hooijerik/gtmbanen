@@ -12,7 +12,7 @@ export function EmployerForm({
   packageLabel?: string;
 }) {
   const [form, setForm] = useState({
-    package: "",
+    package: packages?.[0]?.value ?? "",
     companyName: "",
     contactEmail: "",
     jobUrl: "",

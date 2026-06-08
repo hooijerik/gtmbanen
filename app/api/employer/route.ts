@@ -9,6 +9,7 @@ export async function POST(req: Request) {
       jobUrl: body.jobUrl ? String(body.jobUrl) : undefined,
       jobTitle: body.jobTitle ? String(body.jobTitle) : undefined,
       message: body.message ? String(body.message) : undefined,
+      package: body.package ? String(body.package) : undefined,
     });
     return Response.json(res, { status: res.ok ? 200 : 400 });
   } catch {

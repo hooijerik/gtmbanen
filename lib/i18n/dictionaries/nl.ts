@@ -326,6 +326,63 @@ export const nl = {
     ],
     cta: "Vraag een plaatsing aan",
     contact: "Interesse? Vul het formulier in of mail ons, dan nemen we contact op.",
+    packagesTitle: "Plaatsingsopties",
+    packagesSubtitle:
+      "Plaats je vacature gratis. Wil je meer zichtbaarheid? Kies een premium-plaatsing — we nemen contact op met een offerte.",
+    popularBadge: "Populair",
+    packageCta: "Aanvragen",
+    packages: [
+      {
+        id: "standaard",
+        name: "Standaard",
+        price: "Gratis",
+        blurb: "Je vacature op GTM Banen.",
+        features: [
+          "Plaatsing na controle",
+          "Vindbaar in zoekresultaten, categorie- en locatiepagina's",
+          "Mee in de vacature-alerts",
+        ],
+        highlight: false,
+      },
+      {
+        id: "premium-job",
+        name: "Premium vacature",
+        price: "Op aanvraag",
+        blurb: "Maximale zichtbaarheid voor één vacature.",
+        features: [
+          "Bovenaan de zoekresultaten met Uitgelicht-label",
+          "Uitgelicht op de homepage",
+          "Voorrang in de vacature-alerts",
+          "30 dagen looptijd",
+        ],
+        highlight: true,
+      },
+      {
+        id: "company",
+        name: "Uitgelicht bedrijf",
+        price: "Op aanvraag",
+        blurb: "Zet je bedrijf als werkgever op de kaart.",
+        features: [
+          "Logo bovenaan /bedrijven",
+          "Uitgelicht op de homepage",
+          "Rijker bedrijfsprofiel met banner",
+          "Employer-branding bij je vacatures",
+        ],
+        highlight: false,
+      },
+      {
+        id: "combo",
+        name: "Combinatie",
+        price: "Op aanvraag",
+        blurb: "Premium vacature én uitgelicht bedrijf, met voordeel.",
+        features: [
+          "Alles uit Premium vacature",
+          "Alles uit Uitgelicht bedrijf",
+          "Bundelkorting",
+        ],
+        highlight: false,
+      },
+    ],
   },
   meta: {
     tagline: "Dé vacaturebank voor go-to-market professionals",

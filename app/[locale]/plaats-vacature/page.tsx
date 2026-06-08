@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Container, Card } from "@/components/ui";
 import { EmployerForm } from "@/components/EmployerForm";
+import { PackagesGrid } from "@/components/PackagesGrid";
 import { getDictionary, type Locale } from "@/lib/i18n";
 import { alternates } from "@/lib/i18n/meta";
 
@@ -13,12 +14,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 export default async function PostJobPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
   const dict = await getDictionary(locale);
-  const packages = [
-    { value: "", label: dict.forms.employer.freeListing },
-    { value: "premium-job", label: dict.premium.jobTitle },
-    { value: "company", label: dict.premium.companyTitle },
-    { value: "combo", label: dict.premium.comboTitle },
-  ];
+  const p = dict.premium;
+  const packages = p.packages.map((pk) => ({
+    value: pk.id,
+    label: pk.id === "standaard" ? pk.name : `${pk.name} — ${pk.price}`,
+  }));
   return (
     <Container className="py-12">
       <div className="mx-auto max-w-2xl">
@@ -28,6 +28,14 @@ export default async function PostJobPage({ params }: { params: Promise<{ locale
           <EmployerForm t={dict.forms.employer} packages={packages} packageLabel={dict.forms.employer.package} />
         </Card>
         <p className="mt-4 text-sm text-slate-500">{dict.postJob.atsNote}</p>
+      </div>
+      <div className="mt-16">
+        <PackagesGrid
+          packages={p.packages}
+          title={p.packagesTitle}
+          subtitle={p.packagesSubtitle}
+          popularLabel={p.popularBadge}
+        />
       </div>
     </Container>
   );

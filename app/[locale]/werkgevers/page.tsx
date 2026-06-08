@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Container, Card } from "@/components/ui";
+import { PackagesGrid } from "@/components/PackagesGrid";
 import { countLongOpenJobs } from "@/lib/queries";
 import { withLocale } from "@/lib/urls";
 import { getDictionary, type Locale } from "@/lib/i18n";
@@ -20,7 +21,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 
 export default async function EmployersPage({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
-  const e = (await getDictionary(locale)).employers;
+  const dict = await getDictionary(locale);
+  const e = dict.employers;
+  const p = dict.premium;
   const longOpen = countLongOpenJobs(30);
 
   return (
@@ -49,6 +52,18 @@ export default async function EmployersPage({ params }: { params: Promise<{ loca
             <p className="mt-1 text-sm text-slate-600">{s.d}</p>
           </Card>
         ))}
+      </div>
+
+      {/* Paid placement options (Plaatsingsopties) */}
+      <div className="mt-16">
+        <PackagesGrid
+          packages={p.packages}
+          title={p.packagesTitle}
+          subtitle={p.packagesSubtitle}
+          ctaLabel={p.packageCta}
+          ctaHref={withLocale(locale, "/plaats-vacature")}
+          popularLabel={p.popularBadge}
+        />
       </div>
 
       {/* Interim proposition (GTM AI) for long-open roles */}

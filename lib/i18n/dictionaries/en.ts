@@ -323,6 +323,63 @@ export const en: Dict = {
     ],
     cta: "Request a placement",
     contact: "Interested? Fill in the form or email us and we'll get in touch.",
+    packagesTitle: "Placement options",
+    packagesSubtitle:
+      "Post your job for free. Want more visibility? Choose a premium placement — we'll get in touch with a quote.",
+    popularBadge: "Popular",
+    packageCta: "Request",
+    packages: [
+      {
+        id: "standaard",
+        name: "Standard",
+        price: "Free",
+        blurb: "Your job on GTM Banen.",
+        features: [
+          "Published after review",
+          "Findable in search, category and location pages",
+          "Included in the job alerts",
+        ],
+        highlight: false,
+      },
+      {
+        id: "premium-job",
+        name: "Premium job",
+        price: "On request",
+        blurb: "Maximum visibility for one job.",
+        features: [
+          "Top of the search results with a Featured label",
+          "Featured on the homepage",
+          "Priority in the job alerts",
+          "30-day run time",
+        ],
+        highlight: true,
+      },
+      {
+        id: "company",
+        name: "Featured company",
+        price: "On request",
+        blurb: "Put your company on the map as an employer.",
+        features: [
+          "Logo at the top of /bedrijven",
+          "Featured on the homepage",
+          "Richer company profile with banner",
+          "Employer branding on your jobs",
+        ],
+        highlight: false,
+      },
+      {
+        id: "combo",
+        name: "Bundle",
+        price: "On request",
+        blurb: "Premium job plus featured company, at a discount.",
+        features: [
+          "Everything in Premium job",
+          "Everything in Featured company",
+          "Bundle discount",
+        ],
+        highlight: false,
+      },
+    ],
   },
   meta: {
     tagline: "The job board for go-to-market professionals",
