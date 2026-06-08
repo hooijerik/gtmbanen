@@ -36,6 +36,8 @@ export const nl = {
     postJob: "Plaats een vacature",
     jobAlert: "Vacature-alert",
     advertise: "Adverteren",
+    cookies: "Cookiebeleid",
+    adTerms: "Advertentievoorwaarden",
     initiativeBy: "Een initiatief van",
     collected: "Vacatures verzameld van publieke bronnen.",
     categories: "Categorieën",
@@ -293,6 +295,13 @@ export const nl = {
       submitting: "Bezig…",
       error: "Er ging iets mis. Probeer opnieuw.",
     },
+  },
+  cookie: {
+    message:
+      "We gebruiken cookies voor anonieme statistieken (Google Analytics en Microsoft Clarity) om de site te verbeteren. We plaatsen niets zonder jouw toestemming.",
+    accept: "Accepteren",
+    reject: "Weigeren",
+    policy: "Cookiebeleid",
   },
   premium: {
     badge: "Uitgelicht",

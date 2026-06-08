@@ -38,6 +38,8 @@ export const en: Dict = {
     postJob: "Post a job",
     jobAlert: "Job alert",
     advertise: "Advertise",
+    cookies: "Cookie policy",
+    adTerms: "Advertising terms",
     initiativeBy: "An initiative by",
     collected: "Jobs collected from public sources.",
     categories: "Categories",
@@ -291,6 +293,13 @@ export const en: Dict = {
       submitting: "Working…",
       error: "Something went wrong. Please try again.",
     },
+  },
+  cookie: {
+    message:
+      "We use cookies for anonymous analytics (Google Analytics and Microsoft Clarity) to improve the site. Nothing is set without your consent.",
+    accept: "Accept",
+    reject: "Decline",
+    policy: "Cookie policy",
   },
   premium: {
     badge: "Featured",

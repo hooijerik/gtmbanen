@@ -91,6 +91,9 @@ export function SiteFooter({ locale, dict }: { locale: Locale; dict: Dict }) {
             </span>
             <span className="text-slate-300">·</span>
             <span>© {SITE.name}. {f.collected}</span>
+            <span className="text-slate-300">·</span>
+            <a href={L("/cookiebeleid")} className="hover:text-brand-700">{f.cookies}</a>
+            <a href={L("/advertentievoorwaarden")} className="hover:text-brand-700">{f.adTerms}</a>
           </p>
         </div>
       </Container>
