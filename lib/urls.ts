@@ -45,3 +45,19 @@ export function buildVacaturesUrl(
   const qs = sp.toString();
   return qs ? `${base}?${qs}` : base;
 }
+
+/** Normalize a stored website value to an absolute https URL, or null. */
+export function companyWebsiteUrl(website?: string | null): string | null {
+  if (!website) return null;
+  return website.startsWith("http") ? website : `https://${website}`;
+}
+
+/** Glassdoor employer-search deep link (no API — lands on the company's Glassdoor search). */
+export function glassdoorSearchUrl(name: string): string {
+  return `https://www.glassdoor.nl/Search/results.htm?keyword=${encodeURIComponent(name)}`;
+}
+
+/** LinkedIn company-search deep link (no API — lands on the company search). */
+export function linkedinCompanySearchUrl(name: string): string {
+  return `https://www.linkedin.com/search/results/companies/?keywords=${encodeURIComponent(name)}`;
+}

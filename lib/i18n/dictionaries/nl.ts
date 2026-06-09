@@ -141,7 +141,9 @@ export const nl = {
     subtitle: (n: number) =>
       `${n} ${n === 1 ? "bedrijf" : "bedrijven"} met openstaande GTM-vacatures`,
     openRoles: (n: number) => `${n} ${n === 1 ? "vacature" : "vacatures"}`,
-    website: "Website →",
+    website: "Website",
+    linkedin: "LinkedIn",
+    glassdoor: "Reviews op Glassdoor",
     about: "Over het bedrijf",
     notFound: "Bedrijf niet gevonden",
     jobsAt: (c: string) => `Vacatures bij ${c}`,

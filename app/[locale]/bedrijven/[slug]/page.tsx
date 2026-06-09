@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Container, Chip } from "@/components/ui";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { CompanyLogo } from "@/components/CompanyLogo";
+import { CompanyLinks } from "@/components/CompanyLinks";
 import { JobCard } from "@/components/JobCard";
 import { getCompanyBySlug, listJobs } from "@/lib/queries";
 import { getDictionary, type Locale } from "@/lib/i18n";
@@ -37,11 +38,6 @@ export default async function CompanyPage({ params }: { params: Promise<{ locale
     { company: slug, lang: locale === "en" ? "en" : undefined },
     { sort: "newest", perPage: 100 },
   );
-  const website = company.website
-    ? company.website.startsWith("http")
-      ? company.website
-      : `https://${company.website}`
-    : null;
 
   return (
     <Container className="py-8">
@@ -73,22 +69,16 @@ export default async function CompanyPage({ params }: { params: Promise<{ locale
           {company.featured_live && company.tagline ? (
             <p className="mt-0.5 text-slate-600">{company.tagline}</p>
           ) : null}
-          <p className="mt-0.5 text-slate-500">
-            {dict.companies.openRoles(jobs.length)}
-            {website && (
-              <>
-                {" · "}
-                <a
-                  href={website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-brand-700 hover:underline"
-                >
-                  {dict.companies.website}
-                </a>
-              </>
-            )}
-          </p>
+          <p className="mt-0.5 text-slate-500">{dict.companies.openRoles(jobs.length)}</p>
+          <CompanyLinks
+            name={company.name}
+            website={company.website}
+            labels={{
+              website: dict.companies.website,
+              linkedin: dict.companies.linkedin,
+              glassdoor: dict.companies.glassdoor,
+            }}
+          />
         </div>
       </div>
 
