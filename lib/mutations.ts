@@ -1,6 +1,7 @@
 // Server-only writes used by API route handlers (alerts + employer submissions + premium).
 import { getDb } from "./db";
-import { sendEmail, esc } from "./email";
+import { randomUUID } from "node:crypto";
+import { sendEmail, esc, alertEmailFooter, listUnsubscribeHeaders } from "./email";
 import { SITE } from "./site";
 import { slugify } from "./format";
 import { upsertJob } from "../scripts/scrapers/store";
@@ -21,26 +22,48 @@ export async function addSubscriber(
   const clean = (email || "").trim().toLowerCase();
   if (!isValidEmail(clean)) return { ok: false, error: "Ongeldig e-mailadres" };
   const freq = frequency === "weekly" ? "weekly" : "daily";
-  getDb()
-    .prepare(
-      `INSERT INTO subscribers (email, filters_json, frequency) VALUES (?,?,?)
-       ON CONFLICT(email) DO UPDATE SET filters_json=excluded.filters_json, frequency=excluded.frequency`,
-    )
-    .run(clean, filters && Object.keys(filters).length ? JSON.stringify(filters) : null, freq);
+  const db = getDb();
+  db.prepare(
+    `INSERT INTO subscribers (email, filters_json, frequency, unsubscribe_token) VALUES (?,?,?,?)
+     ON CONFLICT(email) DO UPDATE SET
+       filters_json=excluded.filters_json,
+       frequency=excluded.frequency,
+       unsubscribe_token=COALESCE(subscribers.unsubscribe_token, excluded.unsubscribe_token)`,
+  ).run(clean, filters && Object.keys(filters).length ? JSON.stringify(filters) : null, freq, randomUUID());
+  const token =
+    (
+      db.prepare("SELECT unsubscribe_token FROM subscribers WHERE email = ?").get(clean) as
+        | { unsubscribe_token?: string }
+        | undefined
+    )?.unsubscribe_token ?? "";
 
   // Confirmation to the subscriber (best-effort; never blocks the signup).
   await sendEmail({
     to: clean,
     subject: `Je vacature-alert op ${SITE.name} is ingesteld`,
+    headers: listUnsubscribeHeaders(token),
     html: `<div style="font-family:system-ui,sans-serif;max-width:560px;margin:auto">
       <h2 style="color:#0f172a">Je alert staat aan ✅</h2>
       <p style="color:#334155">Je ontvangt voortaan ${freq === "weekly" ? "wekelijks" : "dagelijks"} de nieuwste
       go-to-market vacatures in Nederland en Vlaanderen die bij je passen.</p>
       <p><a href="${SITE.url}/vacatures" style="color:#6d28d9;font-weight:600">Bekijk nu alle vacatures →</a></p>
-      <p style="color:#94a3b8;font-size:12px">${SITE.name} — een initiatief van GTM AI.</p>
+      ${alertEmailFooter(token)}
     </div>`,
   });
   return { ok: true };
+}
+
+/** Remove a subscriber by their unsubscribe token (used by the email unsubscribe link). */
+export function unsubscribeByToken(token: string): { ok: boolean; email?: string } {
+  const t = (token || "").trim();
+  if (!t) return { ok: false };
+  const db = getDb();
+  const row = db.prepare("SELECT email FROM subscribers WHERE unsubscribe_token = ?").get(t) as
+    | { email?: string }
+    | undefined;
+  if (!row?.email) return { ok: false };
+  db.prepare("DELETE FROM subscribers WHERE unsubscribe_token = ?").run(t);
+  return { ok: true, email: row.email };
 }
 
 export async function addEmployerSubmission(payload: {

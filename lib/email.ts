@@ -1,6 +1,8 @@
 // Transactional email via Resend (https://resend.com). Reads config from the environment
 // at runtime. With no RESEND_API_KEY set it logs a dry-run instead of sending, so local
 // development never needs a key. Never throws - returns a status the caller can ignore.
+import { SITE } from "./site";
+
 const RESEND_URL = "https://api.resend.com/emails";
 
 /** Verified sending identity. The domain MUST be verified in your Resend account.
@@ -18,6 +20,7 @@ export async function sendEmail(opts: {
   html: string;
   from?: string;
   replyTo?: string;
+  headers?: Record<string, string>;
 }): Promise<"sent" | "dry" | "error"> {
   const key = process.env.RESEND_API_KEY;
   const to = Array.isArray(opts.to) ? opts.to : [opts.to];
@@ -37,6 +40,7 @@ export async function sendEmail(opts: {
         subject: opts.subject,
         html: opts.html,
         ...(opts.replyTo ? { reply_to: opts.replyTo } : {}),
+        ...(opts.headers ? { headers: opts.headers } : {}),
       }),
       signal: ctrl.signal,
     });
@@ -60,4 +64,21 @@ export function esc(s: unknown): string {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+}
+
+/** Unsubscribe + preferences footer for alert emails (NL — matches the digest copy). */
+export function alertEmailFooter(token: string): string {
+  const unsub = `${SITE.url}/afmelden?token=${encodeURIComponent(token)}`;
+  const prefs = `${SITE.url}/vacature-alert`;
+  return `<p style="color:#94a3b8;font-size:12px;margin-top:20px;border-top:1px solid #eee;padding-top:12px">
+    Je ontvangt deze mail omdat je een vacature-alert hebt op ${esc(SITE.name)}.<br>
+    <a href="${prefs}" style="color:#94a3b8;text-decoration:underline">Voorkeuren aanpassen</a>
+    &nbsp;·&nbsp;
+    <a href="${unsub}" style="color:#94a3b8;text-decoration:underline">Afmelden</a>
+  </p>`;
+}
+
+/** List-Unsubscribe header so mail clients show a native unsubscribe affordance. */
+export function listUnsubscribeHeaders(token: string): Record<string, string> {
+  return { "List-Unsubscribe": `<${SITE.url}/afmelden?token=${encodeURIComponent(token)}>` };
 }

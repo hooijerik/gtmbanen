@@ -297,11 +297,22 @@ export const nl = {
     },
   },
   cookie: {
+    title: "Cookies op GTM Banen",
     message:
-      "We gebruiken cookies voor anonieme statistieken (Google Analytics en Microsoft Clarity) om de site te verbeteren. We plaatsen niets zonder jouw toestemming.",
-    accept: "Accepteren",
-    reject: "Weigeren",
-    policy: "Cookiebeleid",
+      "We gebruiken Google Analytics voor anonieme, privacyvriendelijke statistieken — die zijn nodig om de site te laten werken en te verbeteren. Met jouw toestemming gebruiken we daarnaast Microsoft Clarity voor heatmaps en sessie-inzichten.",
+    accept: "Alles accepteren",
+    reject: "Alleen noodzakelijk",
+    policy: "Lees ons cookiebeleid",
+  },
+  unsubscribe: {
+    title: "Afmelden voor de vacature-alert",
+    confirm: "Weet je zeker dat je geen vacature-alerts meer wilt ontvangen?",
+    button: "Ja, meld me af",
+    doneTitle: "Je bent afgemeld",
+    doneBody: "Je ontvangt geen vacature-alerts meer. Van gedachten veranderd? Je kunt je hieronder opnieuw instellen.",
+    failTitle: "Afmelden niet gelukt",
+    failBody: "Deze afmeldlink is ongeldig of al gebruikt.",
+    prefsCta: "Vacature-alert opnieuw instellen",
   },
   premium: {
     badge: "Uitgelicht",

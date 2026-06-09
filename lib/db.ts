@@ -4,6 +4,7 @@
 import { DatabaseSync } from "node:sqlite";
 import { mkdirSync } from "node:fs";
 import path from "node:path";
+import { randomUUID } from "node:crypto";
 
 export const SCHEMA = `
 CREATE TABLE IF NOT EXISTS companies (
@@ -78,7 +79,8 @@ CREATE TABLE IF NOT EXISTS subscribers (
   frequency TEXT NOT NULL DEFAULT 'daily',
   confirmed INTEGER NOT NULL DEFAULT 1,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
-  last_sent_at TEXT
+  last_sent_at TEXT,
+  unsubscribe_token TEXT
 );
 
 CREATE TABLE IF NOT EXISTS employer_submissions (
@@ -154,6 +156,18 @@ export function getDb(): DatabaseSync {
     db.exec("ALTER TABLE companies ADD COLUMN banner_url TEXT");
   }
   db.exec("CREATE INDEX IF NOT EXISTS idx_jobs_featured ON jobs(featured)");
+  // Migration: per-subscriber unsubscribe token (powers email unsubscribe links).
+  const scols = db.prepare("PRAGMA table_info(subscribers)").all() as { name: string }[];
+  if (!scols.some((c) => c.name === "unsubscribe_token")) {
+    db.exec("ALTER TABLE subscribers ADD COLUMN unsubscribe_token TEXT");
+  }
+  const needToken = db
+    .prepare("SELECT id FROM subscribers WHERE unsubscribe_token IS NULL OR unsubscribe_token = ''")
+    .all() as { id: number }[];
+  for (const r of needToken) {
+    db.prepare("UPDATE subscribers SET unsubscribe_token = ? WHERE id = ?").run(randomUUID(), r.id);
+  }
+  db.exec("CREATE INDEX IF NOT EXISTS idx_subscribers_token ON subscribers(unsubscribe_token)");
   _db = db;
   return db;
 }

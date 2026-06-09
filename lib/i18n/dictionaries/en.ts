@@ -295,11 +295,22 @@ export const en: Dict = {
     },
   },
   cookie: {
+    title: "Cookies on GTM Banen",
     message:
-      "We use cookies for anonymous analytics (Google Analytics and Microsoft Clarity) to improve the site. Nothing is set without your consent.",
-    accept: "Accept",
-    reject: "Decline",
-    policy: "Cookie policy",
+      "We use Google Analytics for anonymous, privacy-friendly statistics — needed to run and improve the site. With your consent we also use Microsoft Clarity for heatmaps and session insights.",
+    accept: "Accept all",
+    reject: "Necessary only",
+    policy: "Read our cookie policy",
+  },
+  unsubscribe: {
+    title: "Unsubscribe from job alerts",
+    confirm: "Are you sure you no longer want to receive job alerts?",
+    button: "Yes, unsubscribe me",
+    doneTitle: "You're unsubscribed",
+    doneBody: "You'll no longer receive job alerts. Changed your mind? You can set it up again below.",
+    failTitle: "Unsubscribe failed",
+    failBody: "This unsubscribe link is invalid or has already been used.",
+    prefsCta: "Set up a job alert again",
   },
   premium: {
     badge: "Featured",
