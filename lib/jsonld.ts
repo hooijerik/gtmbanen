@@ -4,6 +4,7 @@
 import { sanitizeHtml } from "./format";
 import { companyWebsiteUrl } from "./urls";
 import { SITE } from "./site";
+import { CITY_PROVINCE, BE_CITY_PROVINCE } from "./taxonomy";
 import type { JobRow } from "./types";
 
 /** Normalize a stored date ("YYYY-MM-DD HH:MM:SS" from SQLite, or ISO) to ISO 8601, or null. */
@@ -87,12 +88,17 @@ export function buildJobPostingJsonLd(
   const country = job.country && job.country !== "REMOTE" ? job.country : "NL"; // never "REMOTE"
   const { streetAddress, postalCode } = parseStreetPostcode(job.location_raw);
 
+  // addressRegion: prefer the stored province, else derive it from the city (NL/BE).
+  // Only derive when there is an actual city — never conjure a region for a city-less job.
+  const region =
+    job.province ||
+    (job.city && job.city_slug ? CITY_PROVINCE[job.city_slug] || BE_CITY_PROVINCE[job.city_slug] : undefined);
   const address: Record<string, unknown> = { "@type": "PostalAddress", addressCountry: country };
   if (streetAddress) address.streetAddress = streetAddress;
   if (job.city) address.addressLocality = job.city;
-  if (job.province) address.addressRegion = job.province;
+  if (region) address.addressRegion = region;
   if (postalCode) address.postalCode = postalCode;
-  const hasPlace = !!(job.city || job.province || streetAddress);
+  const hasPlace = !!(job.city || region || streetAddress);
   const sameAs = companyWebsiteUrl(job.company_website); // normalize bare domains to a full https URL
 
   const jsonLd: Record<string, unknown> = {

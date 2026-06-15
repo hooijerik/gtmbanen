@@ -64,6 +64,13 @@ check("onsite: addressRegion", onsiteAddr.addressRegion === "Noord-Holland");
 check("onsite: addressCountry NL", onsiteAddr.addressCountry === "NL");
 check("onsite: no jobLocationType", active.jobLocationType === undefined);
 
+// addressRegion falls back to the city's province when none is stored.
+const noProv = buildJobPostingJsonLd(jobRow({ province: null, city: "Amsterdam", city_slug: "amsterdam" }), OPTS)!;
+check(
+  "region: derived from city when province empty",
+  (noProv.jobLocation as any).address.addressRegion === "Noord-Holland",
+);
+
 // ---- location: remote (country must never be "REMOTE") ----
 const remote = buildJobPostingJsonLd(
   jobRow({ work_mode: "remote", country: "REMOTE", city: null, province: null, location_raw: "Remote" }),
