@@ -52,8 +52,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     for (const p of getProvinceFacets()) add(`/vacatures/locatie/${slugify(p.province)}`);
     for (const t of facets.tools) add(`/tools/${t.key}`);
     for (const c of getActiveCompanySlugs()) add(`/bedrijven/${c}`);
+    // Jobs have a single canonical (the root/NL URL); the /en variant is noindexed, so emit root only.
     for (const j of getAllActiveJobSlugs())
-      add(`/vacature/${j.slug}`, { lastModified: j.last_seen_at });
+      items.push({ url: u(`/vacature/${j.slug}`), lastModified: j.last_seen_at, changeFrequency: "daily" });
   } catch {
     /* DB may be empty at build time - static paths still emitted */
   }

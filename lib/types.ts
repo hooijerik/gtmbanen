@@ -142,6 +142,7 @@ export interface JobRow {
   featured_until: string | null; // ISO; premium-active while >= now
   is_featured?: number; // computed 0/1: featured AND not expired (from JOB_COLS)
   company_featured?: number; // computed 0/1: this job's company is a live spotlight
+  company_website?: string | null; // from getJobBySlug join (for JobPosting sameAs)
   posted_at: string | null;
   first_seen_at: string;
   last_seen_at: string;

@@ -11,7 +11,7 @@
     "reclassify": "tsx scripts/reclassify.ts",
     "fetch-logos": "tsx scripts/fetch-logos.ts",
     "salary-audit": "tsx scripts/salary-audit.ts",
-    "test": "tsx tests/classify.test.ts",
+    "test": "tsx tests/classify.test.ts && tsx tests/jsonld.test.ts",
     "alerts:send": "tsx scripts/send-alerts.ts",
     "premium:expire": "tsx scripts/expire-premiums.ts"
   },

@@ -175,7 +175,7 @@ export function salaryBand(f: JobFilters): { min: number; max: number; count: nu
 export function getJobBySlug(slug: string): JobRow | null {
   const db = getDb();
   const row = db
-    .prepare(`SELECT ${JOB_COLS} ${JOB_FROM} WHERE j.slug = ? ORDER BY (j.status='active') DESC LIMIT 1`)
+    .prepare(`SELECT ${JOB_COLS}, c.website AS company_website ${JOB_FROM} WHERE j.slug = ? ORDER BY (j.status='active') DESC LIMIT 1`)
     .get(slug);
   return (row as unknown as JobRow) ?? null;
 }
